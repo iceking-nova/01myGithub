@@ -1,0 +1,565 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宠爱有家 · 宠物洗护</title>
+    <style>
+        /* ===== Reset & Base ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+            color: #2d2d2d;
+            background: #fff;
+            line-height: 1.6;
+        }
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; display: block; }
+
+        /* ===== Variables ===== */
+        :root {
+            --primary: #f7a1b5;
+            --primary-dark: #e8829a;
+            --accent: #a8d8ea;
+            --accent-dark: #7fc1d6;
+            --warm: #fff5f0;
+            --gray-light: #f9f9f9;
+            --gray: #888;
+            --shadow: 0 8px 30px rgba(0,0,0,.08);
+            --radius: 20px;
+        }
+
+        /* ===== Header / Nav ===== */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(255,255,255,.92);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px rgba(0,0,0,.04);
+            z-index: 1000;
+            padding: 0 40px;
+            height: 68px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo {
+            font-size: 1.5rem; font-weight: 700;
+            letter-spacing: .5px;
+        }
+        .logo span { color: var(--primary); }
+        nav { display: flex; gap: 32px; }
+        nav a {
+            font-size: .95rem; font-weight: 500;
+            position: relative;
+            transition: color .25s;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 2px; background: var(--primary);
+            transition: width .3s;
+        }
+        nav a:hover { color: var(--primary-dark); }
+        nav a:hover::after { width: 100%; }
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .menu-toggle span { width: 26px; height: 3px; background: #333; border-radius: 3px; transition: .3s; }
+
+        /* ===== Hero ===== */
+        .hero {
+            margin-top: 68px;
+            min-height: calc(100vh - 68px);
+            display: flex; align-items: center;
+            background: linear-gradient(135deg, var(--warm) 0%, #fceef0 40%, #e8f4f8 100%);
+            padding: 60px 40px;
+            gap: 60px;
+        }
+        .hero-content { flex: 1; max-width: 560px; }
+        .hero-content h1 {
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .hero-content h1 span { color: var(--primary); }
+        .hero-content p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 32px;
+            max-width: 460px;
+        }
+        .btn-group { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn {
+            display: inline-block; padding: 14px 36px; border-radius: 50px;
+            font-weight: 600; font-size: 1rem;
+            transition: all .3s; cursor: pointer; border: none;
+        }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(247,161,181,.4); }
+        .btn-outline { border: 2px solid var(--primary); color: var(--primary-dark); background: transparent; }
+        .btn-outline:hover { background: var(--primary); color: #fff; transform: translateY(-2px); }
+        .hero-image { flex: 1; display: flex; justify-content: center; align-items: center; }
+        .hero-image svg { width: 100%; max-width: 480px; height: auto; }
+
+        /* ===== Services ===== */
+        .section { padding: 90px 40px; }
+        .section-title {
+            text-align: center; font-size: 2rem; font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .section-sub { text-align: center; color: var(--gray); margin-bottom: 50px; font-size: 1.05rem; }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 28px;
+            max-width: 1100px; margin: 0 auto;
+        }
+        .service-card {
+            background: #fff; border-radius: var(--radius); padding: 36px 28px;
+            box-shadow: var(--shadow); text-align: center;
+            transition: transform .3s, box-shadow .3s;
+        }
+        .service-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,0,0,.12); }
+        .service-card .icon { font-size: 2.8rem; margin-bottom: 16px; }
+        .service-card h3 { font-size: 1.2rem; margin-bottom: 10px; }
+        .service-card p { font-size: .92rem; color: #666; }
+        .service-card .price {
+            display: inline-block; margin-top: 16px;
+            font-weight: 700; font-size: 1.15rem; color: var(--primary-dark);
+        }
+
+        /* ===== About ===== */
+        .about {
+            background: var(--gray-light);
+            display: flex; align-items: center; gap: 60px;
+            max-width: 1100px; margin: 0 auto; padding: 90px 40px;
+        }
+        .about-image { flex: 1; }
+        .about-content { flex: 1; }
+        .about-content h2 { font-size: 1.8rem; margin-bottom: 16px; }
+        .about-content p { color: #555; margin-bottom: 12px; max-width: 480px; }
+        .about-content ul { list-style: none; margin-top: 20px; }
+        .about-content ul li { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .about-content ul li::before { content: '✓'; color: var(--primary); font-weight: 700; font-size: 1.1rem; }
+
+        /* ===== Carousel ===== */
+        .carousel-section { background: var(--gray-light); }
+        .carousel-wrap {
+            position: relative;
+            max-width: 900px; margin: 0 auto;
+            overflow: hidden;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            background: #fff;
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform .5s cubic-bezier(.25,.46,.45,.94);
+        }
+        .carousel-slide {
+            min-width: 100%;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #fce4ec, #e1f5fe);
+        }
+        .carousel-slide svg {
+            width: 100%; height: auto;
+            display: block;
+            max-height: 460px;
+        }
+        .carousel-caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 18px 24px;
+            background: linear-gradient(transparent, rgba(0,0,0,.55));
+            color: #fff;
+            text-align: center;
+            pointer-events: none;
+        }
+        .carousel-caption h3 { font-size: 1.1rem; margin-bottom: 4px; font-weight: 600; }
+        .carousel-caption p { font-size: .88rem; opacity: .9; }
+        .carousel-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(255,255,255,.85);
+            border: none; cursor: pointer;
+            font-size: 1.4rem; color: #555;
+            display: flex; align-items: center; justify-content: center;
+            transition: all .25s; z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+        .carousel-btn:hover { background: #fff; color: var(--primary-dark); transform: translateY(-50%) scale(1.1); }
+        .carousel-btn.prev { left: 14px; }
+        .carousel-btn.next { right: 14px; }
+        .carousel-dots {
+            display: flex; justify-content: center; gap: 10px;
+            padding: 18px 0 26px;
+        }
+        .carousel-dot {
+            width: 12px; height: 12px; border-radius: 50%;
+            background: #ddd; border: none; cursor: pointer;
+            transition: all .3s;
+        }
+        .carousel-dot.active { background: var(--primary); width: 32px; border-radius: 6px; }
+        .carousel-dot:hover { background: var(--primary); }
+
+        /* ===== Testimonials ===== */
+        .testimonials { background: var(--warm); }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            max-width: 1100px; margin: 0 auto;
+        }
+        .testimonial-card {
+            background: #fff; border-radius: var(--radius); padding: 32px;
+            box-shadow: var(--shadow);
+            transition: transform .3s;
+        }
+        .testimonial-card:hover { transform: translateY(-4px); }
+        .testimonial-card .stars { color: #f9a825; font-size: 1.1rem; margin-bottom: 12px; }
+        .testimonial-card p { color: #555; font-size: .95rem; margin-bottom: 16px; }
+        .testimonial-card .author { font-weight: 600; font-size: .9rem; color: #333; }
+
+        /* ===== Contact / Footer ===== */
+        .contact-row {
+            display: flex; gap: 40px;
+            max-width: 1100px; margin: 0 auto; align-items: flex-start;
+        }
+        .contact-info { flex: 1; }
+        .contact-info h3 { font-size: 1.3rem; margin-bottom: 16px; }
+        .contact-info p { color: #555; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .contact-form { flex: 1; background: #fff; padding: 36px; border-radius: var(--radius); box-shadow: var(--shadow); }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%; padding: 14px 16px; border: 1px solid #e0e0e0;
+            border-radius: 12px; font-size: .95rem; font-family: inherit;
+            transition: border-color .3s; margin-bottom: 16px;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus { outline: none; border-color: var(--primary); }
+        .contact-form textarea { resize: vertical; min-height: 110px; }
+        .contact-form .btn { width: 100%; }
+
+        footer {
+            text-align: center; padding: 30px 40px;
+            color: var(--gray); font-size: .85rem;
+            border-top: 1px solid #eee;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 800px) {
+            header { padding: 0 20px; }
+            nav { display: none; flex-direction: column; background: #fff; position: absolute; top: 68px; left: 0; width: 100%; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,.08); gap: 16px; }
+            nav.active { display: flex; }
+            .menu-toggle { display: flex; }
+            .hero { flex-direction: column; padding: 40px 20px; text-align: center; }
+            .hero-content p { max-width: 100%; }
+            .btn-group { justify-content: center; }
+            .about { flex-direction: column; text-align: center; padding: 60px 20px; }
+            .about-content ul { display: inline-block; text-align: left; }
+            .about-content p { max-width: 100%; }
+            .section { padding: 60px 20px; }
+            .contact-row { flex-direction: column; }
+            .carousel-btn { width: 36px; height: 36px; font-size: 1.1rem; }
+            .carousel-slide svg { max-height: 300px; }
+        }
+        @media (max-width: 480px) {
+            .carousel-slide svg { max-height: 220px; }
+            .carousel-caption h3 { font-size: .95rem; }
+            .carousel-caption p { font-size: .8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== Header ====== -->
+    <header>
+        <div class="logo">🐾 宠爱<span>有家</span></div>
+        <nav id="nav">
+            <a href="#services">服务</a>
+            <a href="#about">关于</a>
+            <a href="#carousel">环境</a>
+            <a href="#testimonials">评价</a>
+            <a href="#contact">联系</a>
+        </nav>
+        <div class="menu-toggle" onclick="document.getElementById('nav').classList.toggle('active')">
+            <span></span><span></span><span></span>
+        </div>
+    </header>
+
+    <!-- ====== Hero ====== -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1>给你家毛孩子<br>最好的<span>洗护体验</span></h1>
+            <p>专业宠物洗护 · 温和配方 · 一对一陪伴 · 让每一只毛孩子都干干净净、开开心心回家</p>
+            <div class="btn-group">
+                <a href="#contact" class="btn btn-primary">立即预约</a>
+                <a href="#carousel" class="btn btn-outline">看看环境</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="200" cy="240" rx="120" ry="70" fill="#f7a1b5" opacity=".5"/>
+                <ellipse cx="150" cy="170" rx="60" ry="50" fill="#f7a1b5" opacity=".7"/>
+                <ellipse cx="260" cy="180" rx="55" ry="48" fill="#f7a1b5" opacity=".6"/>
+                <circle cx="180" cy="160" r="45" fill="#f7a1b5" opacity=".8"/>
+                <circle cx="232" cy="165" r="42" fill="#f7a1b5" opacity=".75"/>
+                <polygon points="148,125 135,80 165,110" fill="#f7a1b5" opacity=".85"/>
+                <polygon points="215,120 225,72 250,105" fill="#f7a1b5" opacity=".8"/>
+                <circle cx="172" cy="155" r="7" fill="#fff"/>
+                <circle cx="222" cy="158" r="7" fill="#fff"/>
+                <circle cx="172" cy="155" r="5" fill="#2d2d2d"/>
+                <circle cx="222" cy="158" r="5" fill="#2d2d2d"/>
+                <ellipse cx="197" cy="170" rx="10" ry="6" fill="#e8829a"/>
+                <ellipse cx="108" cy="260" rx="30" ry="18" fill="#f7a1b5" opacity=".6"/>
+                <ellipse cx="290" cy="265" rx="28" ry="16" fill="#f7a1b5" opacity=".55"/>
+                <circle cx="100" cy="90" r="10" fill="#fff" opacity=".8"/>
+                <circle cx="140" cy="50" r="18" fill="#fff" opacity=".7"/>
+                <circle cx="210" cy="40" r="14" fill="#fff" opacity=".75"/>
+                <circle cx="270" cy="55" r="22" fill="#fff" opacity=".65"/>
+                <circle cx="310" cy="95" r="12" fill="#fff" opacity=".7"/>
+                <circle cx="128" cy="82" r="8" fill="#fff" opacity=".85"/>
+                <circle cx="240" cy="80" r="9" fill="#fff" opacity=".75"/>
+                <ellipse cx="350" cy="140" rx="6" ry="10" fill="#a8d8ea" opacity=".6"/>
+                <ellipse cx="365" cy="170" rx="5" ry="9" fill="#a8d8ea" opacity=".5"/>
+                <ellipse cx="340" cy="200" rx="7" ry="11" fill="#a8d8ea" opacity=".5"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ====== Services ====== -->
+    <section class="section" id="services">
+        <h2 class="section-title">🛁 洗护服务</h2>
+        <p class="section-sub">为不同毛孩子量身定制的清洁套餐</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="icon">🐕</div>
+                <h3>基础清洁</h3>
+                <p>温和浴液 · 全身清理 · 吹干梳理 · 耳部清洁</p>
+                <span class="price">¥88 起</span>
+            </div>
+            <div class="service-card">
+                <div class="icon">🐩</div>
+                <h3>精致洗护</h3>
+                <p>深层洁净 · 护毛SPA · 指甲修剪 · 香氛护理</p>
+                <span class="price">¥168 起</span>
+            </div>
+            <div class="service-card">
+                <div class="icon">🐱</div>
+                <h3>猫咪专属</h3>
+                <p>无应激洗护 · 防抓手套 · 轻柔烘干 · 安抚陪伴</p>
+                <span class="price">¥128 起</span>
+            </div>
+            <div class="service-card">
+                <div class="icon">✨</div>
+                <h3>全套护理</h3>
+                <p>洗护+剪毛+修甲+洁耳+刷牙+香薰一条龙</p>
+                <span class="price">¥298 起</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== About ====== -->
+    <section class="about" id="about">
+        <div class="about-image">
+            <svg viewBox="0 0 320 260" width="100%" xmlns="http://www.w3.org/2000/svg">
+                <rect x="30" y="40" width="260" height="180" rx="20" fill="#fceef0"/>
+                <ellipse cx="160" cy="160" rx="80" ry="45" fill="#f7a1b5" opacity=".3"/>
+                <circle cx="130" cy="110" r="36" fill="#f7a1b5" opacity=".6"/>
+                <circle cx="195" cy="108" r="34" fill="#f7a1b5" opacity=".5"/>
+                <polygon points="102,78 90,40 118,65" fill="#f7a1b5" opacity=".7"/>
+                <polygon points="165,72 173,32 198,60" fill="#f7a1b5" opacity=".65"/>
+                <circle cx="125" cy="106" r="5" fill="#fff"/>
+                <circle cx="185" cy="108" r="5" fill="#fff"/>
+                <circle cx="125" cy="106" r="3.5" fill="#2d2d2d"/>
+                <circle cx="185" cy="108" r="3.5" fill="#2d2d2d"/>
+                <ellipse cx="155" cy="122" rx="8" ry="5" fill="#e8829a"/>
+                <path d="M255 75 Q255 55 245 45 Q235 35 225 45 Q215 35 205 45 Q195 55 195 75 L225 105 Z" fill="#f7a1b5" opacity=".7"/>
+            </svg>
+        </div>
+        <div class="about-content">
+            <h2>为什么选择宠爱有家？</h2>
+            <p>我们是本地最受信赖的宠物洗护品牌，用心对待每一位不会说话的小顾客。</p>
+            <ul>
+                <li>进口温和洗护产品，不伤皮肤</li>
+                <li>3 年以上经验专业洗护师</li>
+                <li>一对一全程陪伴，减少应激</li>
+                <li>独立烘干箱 + 紫外线消毒</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ====== Carousel: 店内环境 ====== -->
+    <section class="section carousel-section" id="carousel">
+        <h2 class="section-title">🏠 店内环境</h2>
+        <p class="section-sub">来看看我们为毛孩子们精心打造的洗护空间</p>
+        <div class="carousel-wrap">
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-slide">
+                    <object data="images/shop-1.svg" type="image/svg+xml" style="width:100%;display:block;">前台接待区</object>
+                </div>
+                <div class="carousel-slide">
+                    <object data="images/shop-2.svg" type="image/svg+xml" style="width:100%;display:block;">洗护工作区</object>
+                </div>
+                <div class="carousel-slide">
+                    <object data="images/shop-3.svg" type="image/svg+xml" style="width:100%;display:block;">休息等候区</object>
+                </div>
+            </div>
+            <div class="carousel-caption" id="carouselCaption">
+                <h3 id="captionTitle">前台接待区</h3>
+                <p id="captionDesc">温馨明亮的接待大厅，等待每一位小顾客的到来</p>
+            </div>
+            <button class="carousel-btn prev" id="prevBtn" aria-label="上一张">‹</button>
+            <button class="carousel-btn next" id="nextBtn" aria-label="下一张">›</button>
+        </div>
+        <div class="carousel-dots" id="carouselDots">
+            <button class="carousel-dot active" data-index="0" aria-label="第1张"></button>
+            <button class="carousel-dot" data-index="1" aria-label="第2张"></button>
+            <button class="carousel-dot" data-index="2" aria-label="第3张"></button>
+        </div>
+    </section>
+
+    <!-- ====== Testimonials ====== -->
+    <section class="section testimonials" id="testimonials">
+        <h2 class="section-title">💬 主人说</h2>
+        <p class="section-sub">来自铲屎官们的真实好评</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>「我家金毛第一次洗澡这么配合，回家一直笑！以后就认准这家了。」</p>
+                <div class="author">—— 小白的妈妈</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>「猫咪胆子小，以前去别家都吓得发抖。这里的小姐姐特别温柔，全程安抚，太感动了。」</p>
+                <div class="author">—— 布丁的铲屎官</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>「环境干净漂亮，价格也很合理。洗完还喷了香氛，抱起来软乎乎的～」</p>
+                <div class="author">—— 可乐的姐姐</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== Contact ====== -->
+    <section class="section" id="contact">
+        <h2 class="section-title">📞 联系我们</h2>
+        <p class="section-sub">预约洗护 · 咨询价格 · 合作洽谈</p>
+        <div class="contact-row">
+            <div class="contact-info">
+                <h3>📍 宠爱有家 · 宠物洗护</h3>
+                <p>📞 电话：138-8888-8888</p>
+                <p>📱 微信：PetCleanVIP</p>
+                <p>📧 邮箱：hello@petclean.com</p>
+                <p>🕐 营业时间：09:00 – 20:00（每天）</p>
+                <p>🏠 地址：幸福路 88 号 · 宠爱广场 1F</p>
+            </div>
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('感谢预约！我们会尽快联系您 🐾');">
+                <input type="text" placeholder="您的称呼" required>
+                <input type="tel" placeholder="手机号码" required>
+                <input type="text" placeholder="爱宠种类（如：金毛 / 布偶猫）" required>
+                <textarea placeholder="备注信息（洗护需求、时间偏好等）"></textarea>
+                <button type="submit" class="btn btn-primary">提交预约</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ====== Footer ====== -->
+    <footer>
+        <p>© 2026 宠爱有家 PetClean · 用心呵护每一只毛孩子 🐾</p>
+    </footer>
+
+    <script>
+        // ====== 导航关闭 ======
+        document.addEventListener('click', function(e) {
+            const nav = document.getElementById('nav');
+            const toggle = document.querySelector('.menu-toggle');
+            if (!nav.contains(e.target) && !toggle.contains(e.target)) {
+                nav.classList.remove('active');
+            }
+        });
+
+        // ====== 轮播逻辑 ======
+        (function() {
+            const track = document.getElementById('carouselTrack');
+            const slides = track.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const captionTitle = document.getElementById('captionTitle');
+            const captionDesc = document.getElementById('captionDesc');
+
+            const captions = [
+                { title: '前台接待区', desc: '温馨明亮的接待大厅，等待每一位小顾客的到来' },
+                { title: '专业洗护区', desc: '配备进口洗护设备和温和浴液，给毛孩子最温柔的清洁' },
+                { title: '休息等候区', desc: '舒适的沙发和玩具角，让主人和爱宠都能放松等候' }
+            ];
+
+            let current = 0;
+            const total = slides.length;
+            let autoTimer = null;
+
+            function goTo(index) {
+                if (index < 0) index = total - 1;
+                if (index >= total) index = 0;
+                current = index;
+                track.style.transform = 'translateX(-' + (current * 100) + '%)';
+                dots.forEach((d, i) => d.classList.toggle('active', i === current));
+                captionTitle.textContent = captions[current].title;
+                captionDesc.textContent = captions[current].desc;
+                resetAuto();
+            }
+
+            function next() { goTo(current + 1); }
+            function prev() { goTo(current - 1); }
+
+            function resetAuto() {
+                if (autoTimer) clearInterval(autoTimer);
+                autoTimer = setInterval(next, 4500);
+            }
+
+            prevBtn.addEventListener('click', prev);
+            nextBtn.addEventListener('click', next);
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    goTo(parseInt(this.dataset.index));
+                });
+            });
+
+            // 触摸滑动支持
+            let startX = 0;
+            track.addEventListener('touchstart', function(e) {
+                startX = e.touches[0].clientX;
+            }, { passive: true });
+            track.addEventListener('touchend', function(e) {
+                const diff = startX - e.changedTouches[0].clientX;
+                if (Math.abs(diff) > 50) {
+                    diff > 0 ? next() : prev();
+                }
+            }, { passive: true });
+
+            // 鼠标拖拽支持
+            let mouseDown = false, mouseStartX = 0;
+            track.addEventListener('mousedown', function(e) {
+                mouseDown = true;
+                mouseStartX = e.clientX;
+            });
+            document.addEventListener('mouseup', function() { mouseDown = false; });
+            track.addEventListener('mousemove', function(e) {
+                if (!mouseDown) return;
+                const diff = mouseStartX - e.clientX;
+                if (Math.abs(diff) > 50) {
+                    diff > 0 ? next() : prev();
+                    mouseDown = false;
+                }
+            });
+
+            resetAuto();
+
+            // 鼠标悬停暂停自动播放
+            const wrap = document.querySelector('.carousel-wrap');
+            wrap.addEventListener('mouseenter', function() { clearInterval(autoTimer); });
+            wrap.addEventListener('mouseleave', resetAuto);
+        })();
+    </script>
+
+</body>
+</html>
