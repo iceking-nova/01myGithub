@@ -19,5 +19,4 @@ completion = client.chat.completions.create(
 # 2. 直接从返回结果中提取最终的回复内容并打印
 # completion.choices[0].message.content 就是我们要的最终文本
 print("模型回复：")
-print(completion)
-#print(completion.choices[0].message.content)
+print(completion.choices[0].message.content)
