@@ -1,0 +1,7 @@
+{'messages': [HumanMessage(content='请调用乘法工具，计算3乘以4等于多少？', additional_kwargs={}, response_metadata={}),
+
+ AIMessage(content='', additional_kwargs={'tool_calls': [{'index': 0, 'id': 'call_05d78fb4d5314c2dbd254b', 'type': 'function', 'function': {'name': 'multiply', 'arguments': '{"a": 3, "b": 4}'}}]}, response_metadata={'model_name': 'qwen-plus', 'finish_reason': 'tool_calls', 'request_id': '60991db6-c154-9668-b730-1b9bf7eaa085', 'token_usage': {'input_tokens': 298, 'output_tokens': 24, 'total_tokens': 322, 'prompt_tokens_details': {'cached_tokens': 192}}}, id='lc_run--01a1821f-4e0c-7653-a368-26f6feeb1142-0', tool_calls=[{'name': 'multiply', 'args': {'a': 3, 'b': 4}, 'id': 'call_05d78fb4d5314c2dbd254b', 'type': 'tool_call'}], invalid_tool_calls=[]),
+
+  ToolMessage(content='12', tool_call_id='call_05d78fb4d5314c2dbd254b'),
+
+  AIMessage(content='3乘以4等于12。', additional_kwargs={}, response_metadata={'model_name': 'qwen-plus', 'finish_reason': 'stop', 'request_id': '7d5e6700-ff82-968d-afaf-58988ec94ebd', 'token_usage': {'input_tokens': 338, 'output_tokens': 8, 'total_tokens': 346, 'prompt_tokens_details': {'cached_tokens': 256}}}, id='lc_run--01a1821f-52ab-7801-8fe3-13d8e83e20a2-0', tool_calls=[], invalid_tool_calls=[])], 'llm_calls': 2}
